@@ -29,6 +29,18 @@ var App = React.createClass({
             context: this,
             state: 'fishes'
         }); //takes our state and syncs it with firebase
+
+        var localStorageRef = localStorage.getItem('order-' + this.props.params.storeId);
+
+        if(localStorageRef) {
+            //update our component state to reflect what is in local storage
+            this.setState({
+                order : JSON.parse(localStorageRef)
+            });
+        }
+    },
+    componentWillUpdate: function(nextProps, nextState) {
+        localStorage.setItem('order-' + this.props.params.storeId, JSON.stringify(nextState.order));
     },
     addToOrder: function(key){
         this.state.order[key] = this.state.order[key] + 1 || 1;
@@ -167,7 +179,7 @@ var Order = React.createClass({
             return <li key={key}>Sorry, fish no longer avialable!</li>
         }
         return (
-            <li>
+            <li key={key}>
                 {count}lbs
                 {fish.name}
                 <span className="price">{h.formatPrice(count * fish.price)}</span>
