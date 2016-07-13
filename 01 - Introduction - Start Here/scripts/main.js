@@ -10,6 +10,10 @@ var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 var h = require('./helpers');
 
+//Firebase
+var Rebase = require('re-base');
+var base = Rebase.createClass('https://findmory-cotd.firebaseio.com/');
+
 /*
     APP
 */
@@ -19,6 +23,12 @@ var App = React.createClass({
             fishes: {},
             order: {}
         }
+    },
+    componentDidMount: function() {
+        base.syncState(this.props.params.storeId + '/fishes', {
+            context: this,
+            state: 'fishes'
+        }); //takes our state and syncs it with firebase
     },
     addToOrder: function(key){
         this.state.order[key] = this.state.order[key] + 1 || 1;
@@ -229,7 +239,7 @@ var StorePicker = React.createClass({
             <form className="store-selector" onSubmit={this.goToStore}>
                 <h2>Please Enter A Store</h2>
                 <input type="text" ref="storeId" defaultValue={h.getFunName()} required/>
-                <input type="Submit" />
+                <input type="Submit" value="Submit"/>
             </form>
         )
     }
