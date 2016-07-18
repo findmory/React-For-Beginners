@@ -10,6 +10,10 @@ import reactMixin from 'react-mixin';
 import autobind from 'autobind-decorator';
 
 @autobind
+//autobind decorator is the same as calling {this.goToStore.bind(this)} but it does the binding for you
+// can autobind at the class or method level
+//requires es7.decorators. 
+// so in gulpfile.js you need to include  transform:  [babelify.configure({stage : 0 })] in your buildScript
 class StorePicker extends React.Component {
 
     goToStore(event){
